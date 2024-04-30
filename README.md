@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Nekolker (Neko+Locker)
 
 Welcome to Nekolker - File Encryption At Its Peak! This program allows you to encrypt and decrypt files using a password key.
