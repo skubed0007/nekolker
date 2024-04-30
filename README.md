@@ -34,7 +34,8 @@ Welcome to Nekolker - File Encryption At Its Peak! This program allows you to en
 4. Download one from the release section for you OS and run!!
 
 ## Contributors
-- [Skub](https://github.com/skubed0007)
+- [Skub - GIT](https://github.com/skubed0007)
+- [Neko - Buisness Email][ - nekomusumebusiness@gmail.com] 
 
 
 
