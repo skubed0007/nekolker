@@ -1,3 +1,15 @@
+# Nekolker (Neko + Locker)
+This software can take a passkey then a file and encrypt or decrypt it to a non-utf 8 encoding as bytes!!! 
+I will be updating it (maybe) tho it works for now 
+# future plans
+I am looking forward to add obfuscation and a 2-Membrane and 4-membrane
+Layer of encryption procedure
+
+
+
+
+
+
 # Dear Neko,
 
 I just wanted to take a moment to express my gratitude for having you in my life. Since the day we met on Discord and dove into the amazing world of Nekolker, it's been an incredible journey filled with laughter, support, and endless joy.
