@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Nekolker (Neko + Locker)
+=======
+# Nekolker (Neko+Locker)
+>>>>>>> c2f0b8c (......)
 This software can take a passkey then a file and encrypt or decrypt it to a non-utf 8 encoding as bytes!!! 
 I will be updating it (maybe) tho it works for now 
 # future plans
