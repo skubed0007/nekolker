@@ -1,13 +1,41 @@
-<<<<<<< HEAD
-# Nekolker (Neko + Locker)
-=======
+
 # Nekolker (Neko+Locker)
->>>>>>> c2f0b8c (......)
-This software can take a passkey then a file and encrypt or decrypt it to a non-utf 8 encoding as bytes!!! 
-I will be updating it (maybe) tho it works for now 
-# future plans
-I am looking forward to add obfuscation and a 2-Membrane and 4-membrane
-Layer of encryption procedure
+
+Welcome to Nekolker - File Encryption At Its Peak! This program allows you to encrypt and decrypt files using a password key.
+
+## Usage
+
+1. **Encrypting a File:**
+   - Choose option 1 from the menu.
+   - Enter the file path of the file you want to encrypt.
+   - Enter your encryption password key.
+   - The encrypted file will be saved with the extension ".neko".
+
+2. **Decrypting a File:**
+   - Choose option 2 from the menu.
+   - Enter the file path of the file you want to decrypt.
+   - Enter your decryption password key.
+   - Enter the file extension of the decrypted file (just before ".neko").
+   - The decrypted file will be saved with the specified extension.
+
+3. **Important Information:**
+   - Choose option 3 from the menu to view important information.
+   - This section provides information on possible issues and tips for using the program effectively.
+
+## Notes
+- If you encounter issues with the decrypted file, it could be due to manual editing resulting in missing data blocks or using the wrong decryption key.
+- Encryption of large files may take some time. Please be patient during the encryption process.
+
+## How to Run
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Compile and run the code using Rust compiler.
+               OR
+4. Download one from the release section for you OS and run!!
+
+## Contributors
+- [Skub - GIT](https://github.com/skubed0007)
+- [Neko - Buisness Email][ - nekomusumebusiness@gmail.com] 
 
 
 
