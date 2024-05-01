@@ -32,7 +32,7 @@ cargo build --release --target=x86_64-unknown-linux-musl
 if [ $? -eq 0 ]; then
     echo "Build for Linux successful."
     mkdir -p bin/linux
-    mv target/x86_64-unknown-linux-musl/release/* bin/linux/
+    mv target/x86_64-unknown-linux-musl/release/nekolker bin/linux/
     echo "Executables moved to bin/linux directory."
 else
     echo "Build for Linux failed."
@@ -44,7 +44,7 @@ cargo build --release --target=x86_64-pc-windows-gnu
 if [ $? -eq 0 ]; then
     echo "Build for Windows successful."
     mkdir -p bin/windows
-    mv target/x86_64-pc-windows-gnu/release/* bin/windows/
+    mv target/x86_64-pc-windows-gnu/release/nekolker.exe bin/windows/
     echo "Executables moved to bin/windows directory."
 else
     echo "Build for Windows failed."
