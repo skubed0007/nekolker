@@ -2,7 +2,6 @@ use std::{
     fs::{self, File},
     io::{stdin, stdout, Write},
     sync::Arc,
-    thread,
 };
 use colored::*;
 use clearscreen::clear;
@@ -35,11 +34,7 @@ fn main() {
                 println!("*****************************************************************");
                 let mut input = String::new();
                 stdin().read_line(&mut input).unwrap();
-                stdout().flush().unwrap();
                 restrt();
-
-                //continue;
-                ////main();
             }
             "1" => {
                 println!("{}", "Nekolker - Encrypt File");
@@ -50,29 +45,22 @@ fn main() {
                 let file_name = file_name.trim().to_string();
                 let password_arc = Arc::new(password.clone());
 
-                let handle = thread::spawn(move || {
-                    let input_data = fs::read(&file_name).unwrap();
-                    let encrypted_data: Vec<u8> = input_data
-                        .iter()
-                        .map(|&byte| {
-                            let seed = password_arc
-                                .as_bytes()
-                                .iter()
-                                .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
-                            byte ^ seed + 1
-                        })
-                        .collect();
-                    let output_file = file_name.to_string() + ".neko";
-                    let mut file = File::create(output_file).unwrap();
-                    file.write_all(&encrypted_data).unwrap();
-                    print!("{}{:?}{}","File Encrypted At - ", file, " ");
-                    print!("{}{:?}{}","With Password - ", password_arc, "\n");
-                    stdout().flush().unwrap();
-                });
-
-                handle.join().unwrap();
-                //main();
-                stdout().flush().unwrap();
+                let input_data = fs::read(&file_name).unwrap();
+                let encrypted_data: Vec<u8> = input_data
+                    .iter()
+                    .map(|&byte| {
+                        let seed = password_arc
+                            .as_bytes()
+                            .iter()
+                            .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
+                        byte ^ seed + 1
+                    })
+                    .collect();
+                let output_file = file_name.to_string() + ".neko";
+                let mut file = File::create(output_file).unwrap();
+                file.write_all(&encrypted_data).unwrap();
+                print!("{}{:?}{}","File Encrypted At - ", file, " ");
+                print!("{}{:?}{}","With Password - ", password_arc, "\n");
                 println!("{}","*\n\npress enter*".red());
                 let mut buf = String::new();
                 stdin().read_line(&mut buf).unwrap();
@@ -84,49 +72,45 @@ fn main() {
                 let mut file_name = String::new();
                 let mut output_path = String::new();
                 stdin().read_line(&mut file_name).unwrap();
+                let mut onf = String::new();
+                print!("The Output File Name Without Extension\nLike If output file will be tst.txt\nthen type tst here later you will be asked for extension\n: ");
+                stdout().flush().unwrap();
+                stdin().read_line(&mut onf).unwrap();
                 print!("Enter the output folder path (not file): ");
                 stdout().flush().unwrap();
                 stdin().read_line(&mut output_path).unwrap();
-                let file_name = file_name.trim().to_string();
                 let password_arc = Arc::new(password.clone());
 
-                let handle = thread::spawn(move || {
-                    let input_data = fs::read(&file_name).unwrap();
-                    let decrypted_data: Vec<u8> = input_data
-                        .iter()
-                        .map(|&byte| {
-                            let seed = password_arc
-                                .as_bytes()
-                                .iter()
-                                .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
-                            byte ^ seed + 1
-                        })
-                        .collect();
-                    let mut file_extension = String::new();
-                    print!("{}", "Please input the file extension to save the decrypted file in (e.g., .mp4): ");
-                    stdout().flush().unwrap();
-                    stdin().read_line(&mut file_extension).unwrap();
-                    let output_file = output_path.trim().to_string() + "/" + &file_name + &file_extension.trim();
-                    let mut file = File::create(output_file).unwrap();
-                    file.write_all(&decrypted_data).unwrap();
-                    print!("{}{:?}{}","File Decrypted At - ", file, " ");
-                    print!("{}{:?}{}","With Password - ", password_arc, "\n");
-                    stdout().flush().unwrap();
-                });
-
-                handle.join().unwrap();
-                //main();
+                let input_data = fs::read(&file_name.trim()).unwrap();
+                let decrypted_data: Vec<u8> = input_data
+                    .iter()
+                    .map(|&byte| {
+                        let seed = password_arc
+                            .as_bytes()
+                            .iter()
+                            .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
+                        byte ^ seed + 1
+                    })
+                    .collect();
+                let mut file_extension = String::new();
+                print!("{}", "Please input the file extension to save the decrypted file in (e.g., .mp4): ");
                 stdout().flush().unwrap();
+                stdin().read_line(&mut file_extension).unwrap();
+                let output_file = output_path.trim().to_string() + "/" + &onf.trim() + &file_extension.trim();
+                let mut file = File::create(output_file).unwrap();
+                file.write_all(&decrypted_data).unwrap();
+                print!("{}{:?}{}","File Decrypted At - ", file, " ");
+                print!("{}{:?}{}","With Password - ", password_arc, "\n");
+                println!("{}","*\n\npress enter*".red());
+                let mut buf = String::new();
+                stdin().read_line(&mut buf).unwrap();
                 restrt();
             }
             _ => {
                 println!("{}", "Please choose correctly!".red());
-                //exit(1);
                 println!("{}","*press enter*".red());
                 let mut buf = String::new();
                 stdin().read_line(&mut buf).unwrap();
-                //main();
-                //stdout().flush().unwrap();
                 restrt();
             }
         }
