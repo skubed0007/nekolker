@@ -40,8 +40,9 @@ fn main() {
     stdin().read_line(&mut choice).unwrap();
 
     println!("{}","Enter your password (If you are decrypting, enter the decryption password key. If encrypting, enter the encryption password key. If unsure, just press Enter):".green());
-    let mut password = String::new();
-    stdin().read_line(&mut password).unwrap();
+    let mut passwordd = String::new();
+    stdin().read_line(&mut passwordd).unwrap();
+    let password = passwordd.trim().to_string();
 
     loop {
         match choice.trim() {
@@ -96,7 +97,11 @@ fn main() {
                 print!("{}","Enter the file path: ".bright_green());
                 stdout().flush().unwrap();
                 let mut file_path = String::new();
+                let mut filename = String::new();
                 stdin().read_line(&mut file_path).unwrap();
+                print!("File Name For De-crypted File Without Any Extensions (no periods '.') \n: ");
+                stdout().flush().unwrap();
+                stdin().read_line(&mut filename).unwrap();
                 let file_path = file_path.trim().to_string();
                 let password_arc = Arc::new(password.clone());
 
@@ -116,7 +121,7 @@ fn main() {
                     print!("{}","Please input the file extension to save the decrypted file in\n it should be just before .neko in the file name\nlike tst.mp4.neko so .mp4 is the extension!\n:");
                     stdout().flush().unwrap();
                     stdin().read_line(&mut fileextension).unwrap();
-                    let output_file = file_path.to_string() + fileextension.as_str();
+                    let output_file = file_path.to_string()+ fileextension.trim();
                     let mut file = File::create(output_file).unwrap();
                     file.write_all(&decrypted_data).unwrap();
                     println!("{}{}{:?}",
