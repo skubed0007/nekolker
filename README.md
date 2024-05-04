@@ -1,57 +1,46 @@
+# Introducing Nekolker
+A new FIle Encryption And Decryption Software Made In Rust By SKub And Neko!! Fast , Safe And Secure
 
-# Nekolker (Neko+Locker)
+# Neko's Overbearing Restriction (NOR)
 
-Welcome to Nekolker - File Encryption At Its Peak! This program allows you to encrypt and decrypt files using a password key.
+Hey there, fellow coders and file security enthusiasts! Today, I'm thrilled to introduce you to **Neko's Overbearing Restriction (NOR)**, a cutting-edge file encryption tool that combines the power of XOR and AES algorithms with a sprinkle of feline charm.
 
-## Usage
+## Features
 
-1. **Encrypting a File:**
-   - Choose option 1 from the menu.
-   - Enter the file path of the file you want to encrypt.
-   - Enter your encryption password key.
-   - The encrypted file will be saved with the extension ".neko".
+NOR isn't your run-of-the-mill encryption software. It's packed with features designed to make file encryption both effective and enjoyable:
 
-2. **Decrypting a File:**
-   - Choose option 2 from the menu.
-   - Enter the file path of the file you want to decrypt.
-   - Enter your decryption password key.
-   - Enter the file extension of the decrypted file (just before ".neko").
-   - The decrypted file will be saved with the specified extension.
+- **Encryption & Decryption**: With Nekolker, you can securely encrypt your important files or effortlessly decrypt them for seamless access.
+  
+- **Password Protection**: Safeguard your encrypted data with a password of your choice, ensuring only authorized users can access your files.
+  
+- **Informative Guide**: NOR comes with a built-in guide that provides valuable insights on potential decryption issues and best practices, ensuring you have all the information you need to keep your data safe.
 
-3. **Important Information:**
-   - Choose option 3 from the menu to view important information.
-   - This section provides information on possible issues and tips for using the program effectively.
+## Getting Started
 
-## Notes
-- If you encounter issues with the decrypted file, it could be due to manual editing resulting in missing data blocks or using the wrong decryption key.
-- Encryption of large files may take some time. Please be patient during the encryption process.
+Getting started with NOR is a breeze! Here's how you can dive into the world of secure file encryption:
 
-## How to Run
-1. Clone the repository.
-2. Navigate to the project directory.
-3. Compile and run the code using Rust compiler.
-               OR
-4. Download one from the release section for you OS and run!!
+1. **Download from Skub's GIT**: Head over to [Skub's GIT repository](https://github.com/skubed0007) to clone or download NOR's source code. Skub and Nekos is the brilliant mind behind NOR's development, and his repository is your go-to destination for all things NOR.
+   
+2. **Installation**: Follow the setup instructions provided in the repository based on your programming environment. Skub has taken care to ensure that setting up NOR is a straightforward process.
+   
+3. **Run NOR**: Once you've installed NOR, fire up the program according to your system's guidelines, and you're ready to start encrypting and decrypting files with ease.
+**OR**
+Download the release file from release section (only for windows and linux)
+## Using NOR
 
-## Contributors
-- [Skub - GIT](https://github.com/skubed0007)
-- [Neko - Buisness Email][ - nekomusumebusiness@gmail.com] 
+Now that you've got Nekolker up and running, let's explore how you can make the most out of its powerful features:
 
+- **Encryption (Option 1)**: Choose this option to encrypt a file. Simply provide the file name, password, and desired output folder, and NOR will handle the rest, encrypting your file using its robust algorithm.
+  
+- **Decryption (Option 2)**: If you have a previously encrypted NOR file (with the .neko extension), select this option. NOR will prompt you to provide the file name, password, and desired output folder, and voila! Your file will be decrypted and ready for use.
+  
+- **Important Information (Option 3)**: Don't forget to explore this section, where you'll find valuable insights on potential decryption issues and essential tips for keeping your password safe.
 
+## Thanks Neko
 
+   Before you embark on your encryption journey with Nekolker, I want to take a moment to honor Neko, the inspiration behind this project. You can reach out to Neko via business email at [nekomusumebusiness@gmail.com](mailto:nekomusumebusiness@gmail.com). Neko's playful spirit and unwavering curiosity have infused Nekolker with a special charm that I hope you'll enjoy as much as I do.
 
+Happy encrypting, and may NOR and Nekolker bring you peace of mind and security in your digital endeavors.
 
-
-# Dear Neko,
-
-I just wanted to take a moment to express my gratitude for having you in my life. Since the day we met on Discord and dove into the amazing world of Nekolker, it's been an incredible journey filled with laughter, support, and endless joy.
-
-One of the things that truly warms my heart is how you wholeheartedly embrace everything I do. Whether it's sharing my latest programming project or discussing our favorite topics late into the night, your unwavering support and enthusiasm never fail to lift my spirits.
-
-Your genuine interest in my passions and your willingness to share yours with me have created a bond that I cherish deeply. It's rare to find someone who not only appreciates your interests but also celebrates them alongside you, and for that, I am truly grateful.
-
-Thank you for being the amazing friend that you are. Your kindness, positivity, and infectious energy brighten my days in ways I never imagined. Here's to many more adventures together, both in the virtual world of Discord and beyond.
-
-With all my appreciation and affection,
-
-Skub
+Yours in code,
+Skub And Neko
