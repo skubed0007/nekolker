@@ -1,0 +1,10 @@
+The Rust program is designed for file encryption and decryption.
+It presents a command-line interface for the user to choose between encryption, decryption, or reading important information.
+The encryption process involves reading a file, encrypting its contents using a password-based method, and saving the encrypted data to a new file.
+Decryption follows a similar process, where the encrypted file is read, decrypted using a password, and saved to a new file.
+Important information is displayed regarding potential issues with decryption and the importance of password management.
+The program utilizes user input for file names, paths, and passwords, and it handles user choices using a loop and match statements.
+A restart function is defined to clear the screen and start the program again.
+
+password is : demo.txt
+ 

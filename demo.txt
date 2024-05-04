@@ -5,4 +5,6 @@ Decryption follows a similar process, where the encrypted file is read, decrypte
 Important information is displayed regarding potential issues with decryption and the importance of password management.
 The program utilizes user input for file names, paths, and passwords, and it handles user choices using a loop and match statements.
 A restart function is defined to clear the screen and start the program again.
+
+password is : demo.txt
  

@@ -144,7 +144,7 @@ fn main() {
                 stdout().flush().unwrap();
                 let mut infile = String::new();
                 stdin().read_line(&mut infile).unwrap();
-                println!("\n\n");
+                println!("\n");
 
 
 
@@ -153,13 +153,13 @@ fn main() {
                 print!("{}","Enter the output folder path (not file and no '/' if on linux and a backward slash if on windows at end): ".bold().bright_green());
                 stdout().flush().unwrap();
                 stdin().read_line(&mut outpath).unwrap();
-                println!("\n\n");
+                println!("\n");
 
 
                 let mut outfile = String::new();
                 print!("{}","The Output File Name : ".bold().bright_green());
                 stdout().flush().unwrap();
-                println!("\n\n");
+                println!("\n");
 
                 
                 stdin().read_line(&mut outfile).unwrap();
@@ -181,7 +181,7 @@ fn main() {
                 let mut file_extension = String::new();
                 print!(
                     "{}",
-                    "Please input the file extension to save the decrypted file in (e.g., .mp4): "
+                    "Please input the file extension to save the decrypted file in (e.g., .mp4)(remember to give period i.e -> dot(.) before the extension): "
                 );
                 stdout().flush().unwrap();
                 stdin().read_line(&mut file_extension).unwrap();
