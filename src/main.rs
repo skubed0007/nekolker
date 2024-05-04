@@ -17,16 +17,18 @@ fn main() {
     println!("{}", "Please choose one of the following options:".yellow());
     print!("(1) Encrypt\n(2) Decrypt\n(3) Read Important Information\n: ");
     stdout().flush().unwrap();
-    let mut choice = String::new();
-    stdin().read_line(&mut choice).unwrap();
+    let mut chc = String::new();
+    stdin().read_line(&mut chc).unwrap();
 
-    println!("{}", "Enter your password. If you are decrypting, enter the decryption password key. If encrypting, enter the encryption password key. If unsure, just press Enter:".green());
-    let mut password = String::new();
-    stdin().read_line(&mut password).unwrap();
-    let password: String = password.trim().to_string();
+    println!("{}", "Enter your pswd. If you are decrypting, enter the decryption pswd key. If encrypting, enter the encryption pswd key. If unsure, just press Enter:".green());
+    let mut psswd = String::new();
+    stdin().read_line(&mut psswd).unwrap();
+    let pswd: String = psswd.trim().to_string();
+    //print!("{}{:?}{}", "With pswd - ", psswd.trim(), "\n");
+
 
     loop {
-        match choice.trim() {
+        match chc.trim() {
             "3" => {
                 clear().unwrap();
                 println!(
@@ -70,21 +72,21 @@ fn main() {
                         .bright_yellow()
                 );
                 stdout().flush().unwrap();
-                let mut file_name = String::new();
-                stdin().read_line(&mut file_name).unwrap();
-                let file_name = file_name.trim().to_string();
-                let passwd = password.clone() + "#neko#";
-                let password_arc = Arc::new(passwd.clone());
+                let mut flnm = String::new();
+                stdin().read_line(&mut flnm).unwrap();
+                let flnm = flnm.trim().to_string();
+                let pswd = pswd.clone() + "#neko#"+"   ";
+                let pswd_arc = Arc::new(pswd.clone());
 
-                let input_data = fs::read(&file_name).unwrap();
+                let input_data = fs::read(&flnm).unwrap();
                 let encrypted_data: Vec<u8> = input_data
                     .iter()
                     .map(|&byte| {
-                        let seed = password_arc
+                        let seed = pswd_arc
                             .as_bytes()
                             .iter()
                             .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
-                        byte ^ seed + 1
+                        byte ^ seed + 4^57
                     })
                     .collect();
                 print!(
@@ -116,20 +118,20 @@ fn main() {
                 stdout().flush().unwrap();
                 stdin().read_line(&mut outp).unwrap();
                 let os = OS;
-                let mut outfile = String::new();
+                let mut otfs = String::new();
                 match os {
                     "linux" => {
-                        outfile =
+                        otfs =
                             outp.trim().to_owned() + "/" + onf.trim() + "." + onfe.trim() + ".neko"
                     }
-                    "windows" => outfile = outp.trim().to_owned() + onf.trim() + "." + onfe.trim(),
+                    "windows" => otfs = outp.trim().to_owned() + onf.trim() + "." + onfe.trim(),
                     _ => eprintln!("ERR - UNDEFINED OS - OS : {}", os),
                 }
-                println!("{}", outfile);
-                let mut file = File::create(outfile.trim()).unwrap();
+                println!("{}", otfs);
+                let mut file = File::create(otfs.trim()).unwrap();
                 file.write_all(&encrypted_data).unwrap();
                 print!("{}{:?}{}", "File Encrypted At - ", file, " ");
-                print!("{}{:?}{}", "With Password - ", password, "\n");
+                print!("{}{:?}{}", "With pswd - ", psswd.trim(), "\n");
                 println!("{}", "*\n\npress enter*".red());
                 let mut buf = String::new();
                 stdin().read_line(&mut buf).unwrap();
@@ -156,26 +158,26 @@ fn main() {
                 println!("\n");
 
 
-                let mut outfile = String::new();
+                let mut otfs = String::new();
                 print!("{}","The Output File Name : ".bold().bright_green());
                 stdout().flush().unwrap();
                 println!("\n");
 
                 
-                stdin().read_line(&mut outfile).unwrap();
-                let passwd = password.clone() + "#neko#";
+                stdin().read_line(&mut otfs).unwrap();
+                let pswd = pswd.clone() + "#neko#"+"   ";
 
-                let password_arc: Arc<String> = Arc::new(passwd.clone());
+                let pswd_arc: Arc<String> = Arc::new(pswd.clone());
 
                 let input_data = fs::read(&infile.trim()).unwrap();
                 let decrypted_data: Vec<u8> = input_data
                     .iter()
                     .map(|&byte| {
-                        let seed = password_arc
+                        let seed = pswd_arc
                             .as_bytes()
                             .iter()
                             .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
-                        byte ^ seed + 1
+                        byte ^ seed + 4^57
                     })
                     .collect();
                 let mut file_extension = String::new();
@@ -186,11 +188,11 @@ fn main() {
                 stdout().flush().unwrap();
                 stdin().read_line(&mut file_extension).unwrap();
                 let output_file =
-                    outpath.trim().to_string() + "/" + &outfile.trim() + &file_extension.trim();
+                    outpath.trim().to_string() + "/" + &otfs.trim() + &file_extension.trim();
                 let mut file = File::create(output_file).unwrap();
                 file.write_all(&decrypted_data).unwrap();
                 print!("{}{:?}{}", "File Decrypted At - ", file, " ");
-                print!("{}{:?}{}", "With Password - ", password, "\n");
+                print!("{}{:?}{}", "With pswd - ", psswd.trim(), "\n");
                 println!("{}", "*\n\npress enter*".red());
                 let mut buf = String::new();
                 stdin().read_line(&mut buf).unwrap();
