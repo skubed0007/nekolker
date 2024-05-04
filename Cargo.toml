@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 clearscreen = "3.0.0"
 colored = "2.1.0"
+zip = "1.1.3"

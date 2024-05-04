@@ -1,14 +1,14 @@
 use clearscreen::clear;
 use colored::*;
-//use sysinfo::*;
 use std::{
-    env::consts::OS,
     fs::{self, File},
-    io::{stdin, stdout, Write},
+    io::{stdin, stdout, BufReader, Write},
     sync::Arc,
 };
 
-fn main() {
+use zip::{write::FileOptions, CompressionMethod, ZipArchive, ZipWriter};
+
+fn main() -> ! {
     clear().unwrap();
     println!(
         "{}",
@@ -20,23 +20,16 @@ fn main() {
     let mut chc = String::new();
     stdin().read_line(&mut chc).unwrap();
 
-    println!("{}", "Enter your pswd. If you are decrypting, enter the decryption pswd key. If encrypting, enter the encryption pswd key. If unsure, just press Enter:".green());
+    println!("{}", "Enter your password. If you're decrypting, enter the decryption password key. If encrypting, enter the encryption password key. If unsure, just press Enter:".green());
     let mut psswd = String::new();
     stdin().read_line(&mut psswd).unwrap();
     let pswd: String = psswd.trim().to_string();
-    //print!("{}{:?}{}", "With pswd - ", psswd.trim(), "\n");
-
 
     loop {
         match chc.trim() {
             "3" => {
                 clear().unwrap();
-                println!(
-                    "{}",
-                    "THIS IS EXTREMELY IMPORTANT INFORMATION!"
-                        .bold()
-                        .bright_green()
-                );
+                println!("{}", "IMPORTANT INFORMATION:".bold().bright_green());
                 println!(
                     "{}",
                     "If you encounter issues with the decrypted file, it could be due to:"
@@ -44,18 +37,20 @@ fn main() {
                 );
                 println!(
                     "{}",
-                    "1. Manual editing resulting in missing data blocks.".bright_green()
+                    "1. Manual editing leading to missing data blocks.".bright_green()
                 );
-                println!("{}", "2. Using the wrong decryption key.".bright_green());
                 println!(
                     "{}",
-                    "3.  Do Not Forget Your Key After Encryption!!!".bright_green()
+                    "2. Using the incorrect decryption key.".bright_green()
+                );
+                println!(
+                    "{}",
+                    "3. Remember to keep your encryption key safe!".bright_green()
                 );
                 println!("*****************************************************************");
                 println!(
-                    "{}{}",
-                    "If you are encrypting a large file, it will take some time.".bright_green(),
-                    "Please be patient!!".bright_red()
+                    "{}",
+                    "If you're encrypting a large file, it may take some time. Please be patient."
                 );
                 println!("*PRESS ENTER TO CONTINUE*");
                 println!("*****************************************************************");
@@ -75,7 +70,7 @@ fn main() {
                 let mut flnm = String::new();
                 stdin().read_line(&mut flnm).unwrap();
                 let flnm = flnm.trim().to_string();
-                let pswd = pswd.clone() + "#neko#"+"   ";
+                let pswd = pswd.clone() + "#neko#" + "   ";
                 let pswd_arc = Arc::new(pswd.clone());
 
                 let input_data = fs::read(&flnm).unwrap();
@@ -86,113 +81,100 @@ fn main() {
                             .as_bytes()
                             .iter()
                             .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
-                        byte ^ seed + 4^57
+                        byte ^ seed + 4 ^ 4
                     })
                     .collect();
-                print!(
-                    "{}",
-                    "Output File Name (Without Extension i.e -> no period (.) : "
-                        .bold()
-                        .bright_green()
-                );
-                stdout().flush().unwrap();
-                let mut onf = String::new();
-                stdin().read_line(&mut onf).unwrap();
-                let mut onfe = String::new();
-                print!(
-                    "{}",
-                    "Output File Extension (Without Period i.e -> no dot (.) : "
-                        .bold()
-                        .bright_green()
-                );
-                stdout().flush().unwrap();
-                stdin().read_line(&mut onfe).unwrap();
-                let mut outp = String::new();
 
                 print!(
                     "{}",
-                    "Output Path Folder (Only Folder And No '/' if on linux or \n a backslash if on windows at the end) : "
+                    "Output Folder Name (only folder name, without path): "
                         .bold()
                         .bright_green()
                 );
                 stdout().flush().unwrap();
-                stdin().read_line(&mut outp).unwrap();
-                let os = OS;
-                let mut otfs = String::new();
-                match os {
-                    "linux" => {
-                        otfs =
-                            outp.trim().to_owned() + "/" + onf.trim() + "." + onfe.trim() + ".neko"
-                    }
-                    "windows" => otfs = outp.trim().to_owned() + onf.trim() + "." + onfe.trim(),
-                    _ => eprintln!("ERR - UNDEFINED OS - OS : {}", os),
-                }
-                println!("{}", otfs);
-                let mut file = File::create(otfs.trim()).unwrap();
-                file.write_all(&encrypted_data).unwrap();
-                print!("{}{:?}{}", "File Encrypted At - ", file, " ");
-                print!("{}{:?}{}", "With pswd - ", psswd.trim(), "\n");
+                let mut folder_name = String::new();
+                stdin().read_line(&mut folder_name).unwrap();
+
+                let output_folder = folder_name.trim().to_string();
+                fs::create_dir_all(&output_folder).unwrap();
+
+                let otfs = format!("{}/{}.neko", output_folder, flnm);
+
+                let filee = File::create(&otfs).unwrap();
+
+                let mut zpfs: ZipWriter<File> = ZipWriter::new(filee);
+                let zpoptns: FileOptions<()> = FileOptions::default()
+                    .compression_method(CompressionMethod::DEFLATE)
+                    .compression_level(Some(9));
+                ZipWriter::start_file(&mut zpfs, flnm + ".neko", zpoptns).unwrap();
+                zpfs.write_all(&encrypted_data).unwrap();
+                zpfs.finish().unwrap();
+                println!("File Encrypted At - {}", otfs);
+                println!("Using password - {}", psswd.trim());
                 println!("{}", "*\n\npress enter*".red());
                 let mut buf = String::new();
                 stdin().read_line(&mut buf).unwrap();
                 restrt();
             }
             "2" => {
-                print!(
-                    "{}",
-                    "Enter the file name you want to decrypt (with extension)(file must have .neko at end): "
-                    .bold().bright_green()
-                );
+                print!("{}", "Enter the name of the file you want to decrypt (including its extension) (file must have .neko at end): ".bold().bright_green());
                 stdout().flush().unwrap();
                 let mut infile = String::new();
                 stdin().read_line(&mut infile).unwrap();
-                println!("\n");
+                let infile = infile.trim();
 
+                let dzfs = File::open(infile).unwrap();
+                let mut zreadr = ZipArchive::new(BufReader::new(dzfs)).unwrap();
 
-
-                
-                let mut outpath = String::new();
-                print!("{}","Enter the output folder path (not file and no '/' if on linux and a backward slash if on windows at end): ".bold().bright_green());
+                let mut output_folder = String::new();
+                print!("{}", "Enter the output folder name: ".bold().bright_green());
                 stdout().flush().unwrap();
-                stdin().read_line(&mut outpath).unwrap();
-                println!("\n");
+                stdin().read_line(&mut output_folder).unwrap();
+                let output_folder = output_folder.trim();
+                for idx in 0..zreadr.len() {
+                    let mut file = zreadr.by_index(idx).unwrap(); // Borrow the file from the ZipArchive
+                    println!("{:?}", file.name());
+                    let output_file = format!("{}/{}{}", output_folder, file.name(), ".ntmp");
+                    let outff = output_file.as_str();
+                    let mut outputt_file = File::create(&output_file).unwrap();
 
+                    std::io::copy(&mut file, &mut outputt_file).unwrap();
+                    let pswd = pswd.clone() + "#neko#" + "   ";
+                    let pswd_arc = Arc::new(pswd.clone());
 
-                let mut otfs = String::new();
-                print!("{}","The Output File Name : ".bold().bright_green());
-                stdout().flush().unwrap();
-                println!("\n");
+                    let input_data = fs::read(&outff).unwrap();
+                    let decrypted_data: Vec<u8> = input_data
+                        .iter()
+                        .map(|&byte| {
+                            let seed = pswd_arc
+                                .as_bytes()
+                                .iter()
+                                .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
+                            byte ^ seed + 4 ^ 4
+                        })
+                        .collect();
 
-                
-                stdin().read_line(&mut otfs).unwrap();
-                let pswd = pswd.clone() + "#neko#"+"   ";
+                    print!(
+                        "{}",
+                        "PLEASE Input THE OUTPUT FILE NAME WITHOUT EXTENSION : ".bold()
+                    );
+                    stdout().flush().unwrap();
+                    let mut outfn = String::new();
+                    stdin().read_line(&mut outfn).unwrap();
+                    let mut outfe = String::new();
+                    print!(
+                        "{}",
+                        "PLEASE Input THE OUTPUT FILE Extension (With dot at (.) ): ".bold()
+                    );
+                    stdout().flush().unwrap();
+                    stdin().read_line(&mut outfe).unwrap();
+                    let ff = format!("{}/{}{}", output_folder.trim(), outfn.trim(), outfe.trim());
+                    let mut outfff = File::create(ff).unwrap();
+                    outfff.write(&decrypted_data).unwrap();
+                    fs::remove_file(&output_file).unwrap();
+                    println!("{}{:?}", "File Decrypted At : ", outfff);
+                }
 
-                let pswd_arc: Arc<String> = Arc::new(pswd.clone());
-
-                let input_data = fs::read(&infile.trim()).unwrap();
-                let decrypted_data: Vec<u8> = input_data
-                    .iter()
-                    .map(|&byte| {
-                        let seed = pswd_arc
-                            .as_bytes()
-                            .iter()
-                            .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
-                        byte ^ seed + 4^57
-                    })
-                    .collect();
-                let mut file_extension = String::new();
-                print!(
-                    "{}",
-                    "Please input the file extension to save the decrypted file in (e.g., .mp4)(remember to give period i.e -> dot(.) before the extension): "
-                );
-                stdout().flush().unwrap();
-                stdin().read_line(&mut file_extension).unwrap();
-                let output_file =
-                    outpath.trim().to_string() + "/" + &otfs.trim() + &file_extension.trim();
-                let mut file = File::create(output_file).unwrap();
-                file.write_all(&decrypted_data).unwrap();
-                print!("{}{:?}{}", "File Decrypted At - ", file, " ");
-                print!("{}{:?}{}", "With pswd - ", psswd.trim(), "\n");
                 println!("{}", "*\n\npress enter*".red());
                 let mut buf = String::new();
                 stdin().read_line(&mut buf).unwrap();
