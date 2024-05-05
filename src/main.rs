@@ -1,22 +1,22 @@
 use clearscreen::clear;
 use colored::*;
 use std::{
-    fs::{self, File},
-    io::{stdin, stdout, BufReader, Write},
+    fs::File,
+    io::{stdin, stdout, Read, Write},
+    path::PathBuf,
     sync::Arc,
 };
 
-use zip::{write::FileOptions, CompressionMethod, ZipArchive, ZipWriter};
+use zip::{write::FileOptions, CompressionMethod, ZipWriter};
 
-fn main() -> ! {
+fn main() {
     clear().unwrap();
     println!(
         "{}",
         "Welcome to Nekolker - Advanced File Encryption!".yellow()
     );
     println!("{}", "Please choose one of the following options:".yellow());
-    print!("(1) Encrypt\n(2) Decrypt\n(3) Read Important Information\n: ");
-    stdout().flush().unwrap();
+    println!("(1) Encrypt\n(2) Decrypt\n(3) Read Important Information\n: ");
     let mut chc = String::new();
     stdin().read_line(&mut chc).unwrap();
 
@@ -25,173 +25,178 @@ fn main() -> ! {
     stdin().read_line(&mut psswd).unwrap();
     let pswd: String = psswd.trim().to_string();
 
-    loop {
-        match chc.trim() {
-            "3" => {
-                clear().unwrap();
-                println!("{}", "IMPORTANT INFORMATION:".bold().bright_green());
-                println!(
-                    "{}",
-                    "If you encounter issues with the decrypted file, it could be due to:"
-                        .bright_green()
-                );
-                println!(
-                    "{}",
-                    "1. Manual editing leading to missing data blocks.".bright_green()
-                );
-                println!(
-                    "{}",
-                    "2. Using the incorrect decryption key.".bright_green()
-                );
-                println!(
-                    "{}",
-                    "3. Remember to keep your encryption key safe!".bright_green()
-                );
-                println!("*****************************************************************");
-                println!(
-                    "{}",
-                    "If you're encrypting a large file, it may take some time. Please be patient."
-                );
-                println!("*PRESS ENTER TO CONTINUE*");
-                println!("*****************************************************************");
-                let mut input = String::new();
-                stdin().read_line(&mut input).unwrap();
-                restrt();
-            }
-            "1" => {
-                println!("{}", "Nekolker - Encrypt File");
-                print!(
-                    "{}",
-                    "Enter the name of the file you want to encrypt (including its extension): "
-                        .bold()
-                        .bright_yellow()
-                );
-                stdout().flush().unwrap();
-                let mut flnm = String::new();
-                stdin().read_line(&mut flnm).unwrap();
-                let flnm = flnm.trim().to_string();
-                let pswd = pswd.clone() + "#neko#" + "   ";
-                let pswd_arc = Arc::new(pswd.clone());
-
-                let input_data = fs::read(&flnm).unwrap();
-                let encrypted_data: Vec<u8> = input_data
-                    .iter()
-                    .map(|&byte| {
-                        let seed = pswd_arc
-                            .as_bytes()
-                            .iter()
-                            .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
-                        byte ^ seed + 4 ^ 4
-                    })
-                    .collect();
-
-                print!(
-                    "{}",
-                    "Output Folder Name (only folder name, without path): "
-                        .bold()
-                        .bright_green()
-                );
-                stdout().flush().unwrap();
-                let mut folder_name = String::new();
-                stdin().read_line(&mut folder_name).unwrap();
-
-                let output_folder = folder_name.trim().to_string();
-                fs::create_dir_all(&output_folder).unwrap();
-
-                let otfs = format!("{}/{}.neko", output_folder, flnm);
-
-                let filee = File::create(&otfs).unwrap();
-
-                let mut zpfs: ZipWriter<File> = ZipWriter::new(filee);
-                let zpoptns: FileOptions<()> = FileOptions::default()
-                    .compression_method(CompressionMethod::DEFLATE)
-                    .compression_level(Some(9));
-                ZipWriter::start_file(&mut zpfs, flnm + ".neko", zpoptns).unwrap();
-                zpfs.write_all(&encrypted_data).unwrap();
-                zpfs.finish().unwrap();
-                println!("File Encrypted At - {}", otfs);
-                println!("Using password - {}", psswd.trim());
-                println!("{}", "*\n\npress enter*".red());
-                let mut buf = String::new();
-                stdin().read_line(&mut buf).unwrap();
-                restrt();
-            }
-            "2" => {
-                print!("{}", "Enter the name of the file you want to decrypt (including its extension) (file must have .neko at end): ".bold().bright_green());
-                stdout().flush().unwrap();
-                let mut infile = String::new();
-                stdin().read_line(&mut infile).unwrap();
-                let infile = infile.trim();
-
-                let dzfs = File::open(infile).unwrap();
-                let mut zreadr = ZipArchive::new(BufReader::new(dzfs)).unwrap();
-
-                let mut output_folder = String::new();
-                print!("{}", "Enter the output folder name: ".bold().bright_green());
-                stdout().flush().unwrap();
-                stdin().read_line(&mut output_folder).unwrap();
-                let output_folder = output_folder.trim();
-                for idx in 0..zreadr.len() {
-                    let mut file = zreadr.by_index(idx).unwrap(); // Borrow the file from the ZipArchive
-                    println!("{:?}", file.name());
-                    let output_file = format!("{}/{}{}", output_folder, file.name(), ".ntmp");
-                    let outff = output_file.as_str();
-                    let mut outputt_file = File::create(&output_file).unwrap();
-
-                    std::io::copy(&mut file, &mut outputt_file).unwrap();
-                    let pswd = pswd.clone() + "#neko#" + "   ";
-                    let pswd_arc = Arc::new(pswd.clone());
-
-                    let input_data = fs::read(&outff).unwrap();
-                    let decrypted_data: Vec<u8> = input_data
-                        .iter()
-                        .map(|&byte| {
-                            let seed = pswd_arc
-                                .as_bytes()
-                                .iter()
-                                .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
-                            byte ^ seed + 4 ^ 4
-                        })
-                        .collect();
-
-                    print!(
-                        "{}",
-                        "PLEASE Input THE OUTPUT FILE NAME WITHOUT EXTENSION : ".bold()
-                    );
-                    stdout().flush().unwrap();
-                    let mut outfn = String::new();
-                    stdin().read_line(&mut outfn).unwrap();
-                    let mut outfe = String::new();
-                    print!(
-                        "{}",
-                        "PLEASE Input THE OUTPUT FILE Extension (With dot at (.) ): ".bold()
-                    );
-                    stdout().flush().unwrap();
-                    stdin().read_line(&mut outfe).unwrap();
-                    let ff = format!("{}/{}{}", output_folder.trim(), outfn.trim(), outfe.trim());
-                    let mut outfff = File::create(ff).unwrap();
-                    outfff.write(&decrypted_data).unwrap();
-                    fs::remove_file(&output_file).unwrap();
-                    println!("{}{:?}", "File Decrypted At : ", outfff);
-                }
-
-                println!("{}", "*\n\npress enter*".red());
-                let mut buf = String::new();
-                stdin().read_line(&mut buf).unwrap();
-                restrt();
-            }
-            _ => {
-                println!("{}", "Please choose correctly!".red());
-                println!("{}", "*press enter*".red());
-                let mut buf = String::new();
-                stdin().read_line(&mut buf).unwrap();
-                restrt();
-            }
-        }
+    match chc.trim() {
+        "1" => encrypt_file(&pswd),
+        "2" => decrypt_file(&pswd),
+        "3" => read_important_information(),
+        _ => println!("{}", "Invalid choice. Please choose correctly!".red()),
     }
 }
 
-fn restrt() {
-    clear().unwrap();
-    main();
+fn encrypt_file(password: &str) {
+    println!("{}", "Nekolker - Encrypt File");
+    print!(
+        "{}",
+        "Enter the name of the file you want to encrypt (including its extension): "
+            .bold()
+            .bright_yellow()
+    );
+    stdout().flush().unwrap();
+    let mut file_path = String::new();
+    stdin().read_line(&mut file_path).unwrap();
+    let file_path = file_path.trim();
+
+    if let Ok(mut file) = File::open(file_path) {
+        let mut input_data = Vec::new();
+        file.read_to_end(&mut input_data).unwrap();
+
+        print!(
+            "{}",
+            "Enter the output folder path for the encrypted file: "
+                .bold()
+                .bright_green()
+        );
+        stdout().flush().unwrap();
+        let mut output_folder = String::new();
+        stdin().read_line(&mut output_folder).unwrap();
+        let output_folder = output_folder.trim();
+
+        print!(
+            "{}",
+            "Enter the output file name for the encrypted content (without extension): "
+                .bold()
+                .bright_green()
+        );
+        stdout().flush().unwrap();
+        let mut file_name = String::new();
+        stdin().read_line(&mut file_name).unwrap();
+        let file_name = file_name.trim();
+
+        let output_path = PathBuf::from(output_folder).join(format!("{}.neko", file_name));
+
+        if let Ok(mut zip_file) = File::create(&output_path) {
+            let pswd_arc = Arc::new(password.to_owned());
+            let encrypted_data: Vec<u8> = input_data
+                .iter()
+                .map(|&byte| {
+                    let seed = pswd_arc
+                        .as_bytes()
+                        .iter()
+                        .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
+                    byte ^ seed + 4 ^ 4
+                })
+                .collect();
+
+            let mut zip = ZipWriter::new(&mut zip_file);
+            let options: FileOptions<()> = FileOptions::default()
+                .compression_method(CompressionMethod::DEFLATE)
+                .compression_level(Some(9));
+            zip.start_file(file_path.to_owned() + ".neko", options)
+                .unwrap();
+            zip.write_all(&encrypted_data).unwrap();
+            println!("File encrypted successfully at: {}", output_path.display());
+        } else {
+            println!("{}", "Failed to create output file. Exiting...".red());
+        }
+    } else {
+        println!("{}", "Error: No such file or directory".red());
+        println!("Failed to read input file: {}", file_path);
+        println!("{}", "Exiting...".red());
+    }
+}
+
+fn decrypt_file(password: &str) {
+    println!("{}", "Nekolker - Decrypt File");
+    print!(
+        "{}",
+        "Enter the name of the encrypted file you want to decrypt (file must end with .neko): "
+            .bold()
+            .bright_yellow()
+    );
+    stdout().flush().unwrap();
+    let mut file_path = String::new();
+    stdin().read_line(&mut file_path).unwrap();
+    let file_path = file_path.trim();
+
+    if let Ok(mut zip_file) = File::open(file_path) {
+        print!(
+            "{}",
+            "Enter the output folder path for the decrypted file: "
+                .bold()
+                .bright_green()
+        );
+        stdout().flush().unwrap();
+        let mut output_folder = String::new();
+        stdin().read_line(&mut output_folder).unwrap();
+        let output_folder = output_folder.trim();
+
+        print!(
+            "{}",
+            "Enter the output file name for the decrypted content (without extension): "
+                .bold()
+                .bright_green()
+        );
+        stdout().flush().unwrap();
+        let mut file_name = String::new();
+        stdin().read_line(&mut file_name).unwrap();
+        let file_name = file_name.trim();
+
+        let output_path = PathBuf::from(output_folder).join(format!("{}.decrypted", file_name));
+
+        let mut zip = zip::ZipArchive::new(&mut zip_file).unwrap();
+        let mut encrypted_data = Vec::new();
+        zip.by_index(0)
+            .unwrap()
+            .read_to_end(&mut encrypted_data)
+            .unwrap();
+
+        let pswd_arc = Arc::new(password.to_owned());
+        let decrypted_data: Vec<u8> = encrypted_data
+            .iter()
+            .map(|&byte| {
+                let seed = pswd_arc
+                    .as_bytes()
+                    .iter()
+                    .fold(0, |acc: u8, &byte| acc.wrapping_add(byte));
+                byte ^ (seed + 4) ^ 4
+            })
+            .collect();
+
+        let mut output_file = File::create(&output_path).unwrap();
+        output_file.write_all(&decrypted_data).unwrap();
+
+        println!("File decrypted successfully at: {}", output_path.display());
+    } else {
+        println!("{}", "Error: No such file or directory".red());
+        println!("Failed to read input file: {}", file_path);
+        println!("{}", "Exiting...".red());
+    }
+}
+
+fn read_important_information() {
+    println!("{}", "IMPORTANT INFORMATION:".bold().bright_green());
+    println!(
+        "{}",
+        "If you encounter issues with the decrypted file, it could be due to:".bright_green()
+    );
+    println!(
+        "{}",
+        "1. Manual editing leading to missing data blocks.".bright_green()
+    );
+    println!(
+        "{}",
+        "2. Using the incorrect decryption key.".bright_green()
+    );
+    println!(
+        "{}",
+        "3. Remember to keep your encryption key safe!".bright_green()
+    );
+    println!(
+        "{}",
+        "If you're encrypting a large file, it may take some time. Please be patient."
+            .bright_green()
+    );
+    println!("*PRESS ENTER TO CONTINUE*");
+    let mut input = String::new();
+    stdin().read_line(&mut input).unwrap();
 }
