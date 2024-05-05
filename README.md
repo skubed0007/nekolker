@@ -3,29 +3,28 @@ A new FIle Encryption And Decryption Software Made In Rust By SKub And Neko!! Fa
 
 # Neko's Overbearing Restriction (NOR)
 
-Hey there, fellow coders and file security enthusiasts! Today, I'm thrilled to introduce you to **Neko's Overbearing Restriction (NOR)**, a cutting-edge file encryption tool that combines the power of XOR and AES algorithms with a sprinkle of feline charm.
+Hey there, fellow coders and file security enthusiasts! Today, I'm thrilled to introduce you to **Neko's Overbearing Restriction (NOR)**, a cutting-edge file encryption algorithm that combines the power of XOR and AES algorithms with a sprinkle of feline charm.
 
 ## Features
 
-NOR isn't your run-of-the-mill encryption software. It's packed with features designed to make file encryption both effective and enjoyable:
+Nekolker isn't your run-of-the-mill encryption software. It's packed with features designed to make file encryption both effective and enjoyable:
 
 - **Encryption & Decryption**: With Nekolker, you can securely encrypt your important files or effortlessly decrypt them for seamless access.
   
 - **Password Protection**: Safeguard your encrypted data with a password of your choice, ensuring only authorized users can access your files.
   
-- **Informative Guide**: NOR comes with a built-in guide that provides valuable insights on potential decryption issues and best practices, ensuring you have all the information you need to keep your data safe.
+- **Informative Guide**: Nekolker comes with a built-in guide that provides valuable insights on potential decryption issues and best practices, ensuring you have all the information you need to keep your data safe.
 
 ## Getting Started
 
-Getting started with NOR is a breeze! Here's how you can dive into the world of secure file encryption:
+Getting started with Nekolker is a breeze! Here's how you can dive into the world of secure file encryption:
 
-1. **Download from Skub's GIT**: Head over to [Skub's GIT repository](https://github.com/skubed0007) to clone or download NOR's source code. Skub and Nekos is the brilliant mind behind NOR's development, and his repository is your go-to destination for all things NOR.
+1. **Download from Skub's GIT**: Head over to [GIT repository](https://github.com/skubed0007) to clone or download NOR's source code. Skub and Neko is the brilliant mind behind NOR's development, and his repository is your go-to destination for all things NOR.
+2. Build From Source Like You Would Build Any Other Rust Program
    
-2. **Installation**: Follow the setup instructions provided in the repository based on your programming environment. Skub has taken care to ensure that setting up NOR is a straightforward process.
-   
-3. **Run NOR**: Once you've installed NOR, fire up the program according to your system's guidelines, and you're ready to start encrypting and decrypting files with ease.
+3. **Run NOR**: Once you've built NOR, fire up the program according to your system's guidelines, and you're ready to start encrypting and decrypting files with ease.
 **OR**
-Download the release file from release section (only for windows and linux)
+**Download the release file from release section (only for windows and linux)**
 ## Using NOR
 
 Now that you've got Nekolker up and running, let's explore how you can make the most out of its powerful features:
